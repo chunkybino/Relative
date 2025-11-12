@@ -9,6 +9,13 @@ public class Frame : MonoBehaviour
     
     public float speedOfLight = 10;
 
+    public Vector3 acceleration;
+
+    public bool isInterial {get{return acceleration != Vector3.zero;}}
+
+    public Vector3 rimler;
+    public Vector3 rimlerInverse;
+
     public static float Gamma(Vector3 velocity)
     {
         return 1 / Mathf.Sqrt(1 - velocity.sqrMagnitude/(C*C));
@@ -51,6 +58,17 @@ public class Frame : MonoBehaviour
         {
             doBoost = false;
             BoostFrame(boostVel);
+        }
+
+        rimlerInverse = -acceleration/(C*C);
+        rimler = rimlerInverse/rimlerInverse.sqrMagnitude;
+    }
+
+    void FixedUpdate()
+    {
+        if (isInterial)
+        {
+            BoostFrame(acceleration * Time.fixedDeltaTime);
         }
     }
 
