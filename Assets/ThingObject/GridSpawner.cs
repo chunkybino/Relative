@@ -29,8 +29,7 @@ public class GridSpawner : MonoBehaviour
         {
             for (int j = -gridWidth.y/2; j < gridWidth.y/2; j++)
             {
-                TransformST thing = Instantiate(gridObj);
-                thing.transform.position = new Vector3(gridTileSize*i,gridTileSize*j,0);
+                TransformST thing = Instantiate(gridObj, new Vector3(gridTileSize*i,gridTileSize*j,0), Quaternion.identity);
                 thing.transform.SetParent(this.transform);
             }
         }

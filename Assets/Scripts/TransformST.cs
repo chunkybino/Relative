@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Mathematics;
 
 public class TransformST : MonoBehaviour
 {
+    Frame frame;
+
     float C {get{return Frame.C;}}
 
     public float Cmult {get{
@@ -37,14 +40,76 @@ public class TransformST : MonoBehaviour
 
     public Vector3 accelerationProper;
 
+    public Vector3 realPosition;
+    //public Vector3 realVel;
+
+    public Vector3 accelStartPos;
+    public Vector3 accelStartVel;
+
+    public Vector3 fakeVel;
+
+    public float rimlerNum;
+
+    Vector3 frameAccel;
+
     void OnEnable()
     {
-        Frame.singleton.onBoost.AddListener(Boost);
+        frame = Frame.singleton;
+
+        frame.onBoost.AddListener(Boost);
+    }
+    void Start()
+    {
+        realPosition = position;
     }
 
     void FixedUpdate()
     {
-        //velocityProper += accelerationProper * Time.fixedDeltaTime * gamma;
+        velocityProper += accelerationProper * Time.fixedDeltaTime * gamma;
+
+        if (frameAccel != frame.acceleration)
+        {
+            frameAccel = frame.acceleration;
+
+            accelStartPos = position;
+            accelStartVel = fakeVel;
+        }
+
+        if (frame.isInterial && !float.IsNaN(frame.rimler.x))
+        {
+            Vector3 rimlerDistance = position - frame.rimler;
+            rimlerNum = Vector3.Dot(rimlerDistance, -frame.rimlerInverse);
+            
+            fakeVel -= frame.acceleration * Time.deltaTime;
+
+            position += fakeVel * Time.fixedDeltaTime * rimlerNum;
+
+            /*
+            float velSlope = (accelStartVel.x)/C;
+            float rimler = frame.rimler.x;
+
+            float newX = (accelStartPos.x - rimler)*(1/Mathf.Sqrt(1-(velSlope*velSlope)))/math.cosh((C/rimler)*frame.timeAccel + Arctanh(velSlope)) + rimler;
+
+            float newVelX = -(C/rimler)*(newX-rimler)*math.tanh((C/rimler)*frame.timeAccel + Arctanh(velSlope));
+
+            Vector3 newPos = position;
+            newPos.x = newX;
+            position = newPos;
+
+            rimlerNum = Mathf.Abs((newPos.x-rimler)/rimler);
+
+            fakeVel.x = newVelX/rimlerNum;
+
+            float Arctanh(float t)
+            {
+                return Mathf.Log(Mathf.Sqrt((1+t)/(1-t)));
+            }
+            */
+        }
+        else
+        {
+            position += fakeVel * Time.fixedDeltaTime;
+        }
         
         transform.position += velocity * Time.fixedDeltaTime;// * Cmult;
     }

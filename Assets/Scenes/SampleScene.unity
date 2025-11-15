@@ -455,7 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c8c20e90a4fd14d824d1a63f05491d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: {x: 80, y: 30}
+  gridWidth: {x: 1, y: 1}
   gridTileSize: 3
   gridObj: {fileID: 3642878993632814184, guid: 720ce665bbf5c2841b64284c941e05fa, type: 3}
   spawn: 0
@@ -529,6 +529,10 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
+  framePos: {x: 0, y: 0, z: 0}
+  frameVel: {x: 0, y: 0, z: 0}
+  worldVel: {x: 0, y: 0, z: 0}
+  timeAccel: 0
 --- !u!4 &1705256287
 Transform:
   m_ObjectHideFlags: 0

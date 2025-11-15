@@ -20,6 +20,10 @@ public class Frame : MonoBehaviour
     {
         return 1 / Mathf.Sqrt(1 - velocity.sqrMagnitude/(C*C));
     }
+    public static float OppositeGamma(Vector3 properVelocity)
+    {
+        return 1 / Mathf.Sqrt(1 + properVelocity.sqrMagnitude/(C*C));
+    }
 
     public UnityEvent<Matrix4x4> onBoost = new UnityEvent<Matrix4x4>();
 
@@ -47,6 +51,14 @@ public class Frame : MonoBehaviour
     [SerializeField] bool doBoost;
     [SerializeField] Matrix4x4 recentBoost;
 
+    public Vector3 framePos;
+    public Vector3 frameVel;
+    public Vector3 worldVel;
+
+    public float timeAccel;
+
+    Vector3 prevAccel;
+
     void OnValidate()
     {
         C = speedOfLight;
@@ -66,9 +78,25 @@ public class Frame : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (prevAccel != acceleration)
+        {
+            prevAccel = acceleration;
+            timeAccel = 0;
+        }
+
         if (isInterial)
         {
-            BoostFrame(acceleration * Time.fixedDeltaTime);
+            timeAccel += Time.fixedDeltaTime;
+
+            //frameVel += acceleration * Time.fixedDeltaTime;
+            //worldVel = frameVel * OppositeGamma(frameVel);
+            //framePos += frameVel * Time.fixedDeltaTime;
+
+            //BoostFrame(acceleration * Time.fixedDeltaTime);
+        }
+        else
+        {
+            timeAccel = 0;
         }
     }
 
