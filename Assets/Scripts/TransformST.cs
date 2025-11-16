@@ -8,10 +8,6 @@ public class TransformST : MonoBehaviour
 
     float C {get{return Frame.C;}}
 
-    public float Cmult {get{
-        return Mathf.Max(1 - Vector3.Dot(position,Frame.singleton.rimlerInverse), -100);
-    }}
-
     public Vector3 position {get{return transform.position;} set{transform.position = value;}}
     public Vector4 position4 {get{return new Vector4(position.x,position.y,position.z,0);}}
 
@@ -38,19 +34,12 @@ public class TransformST : MonoBehaviour
 
     public Vector4 velocity4 {get{return new Vector4(velocity.x,velocity.y,velocity.z,C);}}
 
-    public Vector3 accelerationProper;
-
-    public Vector3 realPosition;
-    //public Vector3 realVel;
-
-    public Vector3 accelStartPos;
-    public Vector3 accelStartVel;
+    //public Vector3 accelerationProper;
 
     public Vector3 fakeVel;
+    public Vector3 realVel;
 
-    public float rimlerNum;
-
-    Vector3 frameAccel;
+    [SerializeField] Transform skewParent;
 
     void OnEnable()
     {
@@ -58,60 +47,52 @@ public class TransformST : MonoBehaviour
 
         frame.onBoost.AddListener(Boost);
     }
+
     void Start()
     {
-        realPosition = position;
+        SpawnSkewerThing();
+    }
+    void SpawnSkewerThing()
+    {
+        GameObject obj = new GameObject(gameObject.name);
+        skewParent = obj.transform;
+        transform.SetParent(skewParent);
     }
 
     void FixedUpdate()
     {
-        velocityProper += accelerationProper * Time.fixedDeltaTime * gamma;
-
-        if (frameAccel != frame.acceleration)
+        if (frame.isInterial)
         {
-            frameAccel = frame.acceleration;
+            fakeVel -= frame.acceleration * Time.fixedDeltaTime;
+            realVel = fakeVel * Frame.OppositeGamma(fakeVel);
 
-            accelStartPos = position;
-            accelStartVel = fakeVel;
-        }
-
-        if (frame.isInterial && !float.IsNaN(frame.rimler.x))
-        {
-            Vector3 rimlerDistance = position - frame.rimler;
-            rimlerNum = Vector3.Dot(rimlerDistance, -frame.rimlerInverse);
-            
-            fakeVel -= frame.acceleration * Time.deltaTime;
-
-            position += fakeVel * Time.fixedDeltaTime * rimlerNum;
-
-            /*
-            float velSlope = (accelStartVel.x)/C;
-            float rimler = frame.rimler.x;
-
-            float newX = (accelStartPos.x - rimler)*(1/Mathf.Sqrt(1-(velSlope*velSlope)))/math.cosh((C/rimler)*frame.timeAccel + Arctanh(velSlope)) + rimler;
-
-            float newVelX = -(C/rimler)*(newX-rimler)*math.tanh((C/rimler)*frame.timeAccel + Arctanh(velSlope));
-
-            Vector3 newPos = position;
-            newPos.x = newX;
-            position = newPos;
-
-            rimlerNum = Mathf.Abs((newPos.x-rimler)/rimler);
-
-            fakeVel.x = newVelX/rimlerNum;
-
-            float Arctanh(float t)
-            {
-                return Mathf.Log(Mathf.Sqrt((1+t)/(1-t)));
-            }
-            */
+            ContractRimler(frame.rimler);
         }
         else
         {
-            position += fakeVel * Time.fixedDeltaTime;
+            skewParent.position += realVel * Time.fixedDeltaTime;
         }
+    }
+
+    public void ContractRimler(Vector3 rimler)
+    {
+        Vector3 rimlerDis = position - rimler;
+        float rimlerDot = Vector3.Dot(rimlerDis,-rimler)/rimler.magnitude;
+
+        //Vector3 parVel = rimler.normalized*Vector3.Dot(realVel, rimler.normalized);
+        //Vector3 perpVel = realVel-parVel;
+
+        skewParent.position += realVel * (rimlerDot/rimler.magnitude) * Time.fixedDeltaTime;
+
+        skewParent.localScale = new Vector3(Mathf.Sqrt(1 - realVel.sqrMagnitude/(C*C)), 1, 1);
+
+        //Quaternion currentQuart = skewParent.rotation;
+        Quaternion directionQuart = Quaternion.FromToRotation(new Vector3(1,0,0), realVel);
+        skewParent.rotation = directionQuart;
+        transform.localRotation = Quaternion.Inverse(directionQuart);
         
-        transform.position += velocity * Time.fixedDeltaTime;// * Cmult;
+        //skewParent.position = position;
+        //transform.localPosition = Vector3.zero;
     }
 
     public void Boost(Matrix4x4 mat)

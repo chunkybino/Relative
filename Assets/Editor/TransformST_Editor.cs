@@ -13,7 +13,6 @@ public class TransformST_Editor : Editor
         base.OnInspectorGUI();
 
         EditorGUILayout.FloatField("Gamma", transform.gamma);
-        EditorGUILayout.FloatField("CMult", transform.Cmult);
 
         Vector3 vel = EditorGUILayout.Vector3Field("Velocity", transform.velocity);
         Vector3 velProp = EditorGUILayout.Vector3Field("Velocity Proper", transform.velocityProper);

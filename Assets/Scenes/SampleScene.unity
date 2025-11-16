@@ -181,7 +181,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -435,6 +435,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1667211470}
+  - component: {fileID: 1667211471}
   - component: {fileID: 1667211469}
   m_Layer: 0
   m_Name: ThingGrid
@@ -455,9 +456,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c8c20e90a4fd14d824d1a63f05491d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: {x: 1, y: 1}
+  gridWidth: {x: 40, y: 20}
   gridTileSize: 3
-  gridObj: {fileID: 3642878993632814184, guid: 720ce665bbf5c2841b64284c941e05fa, type: 3}
+  gridObj: {fileID: 2021216270786356536, guid: 01f69d2410add3046b152f40fd4d33f1, type: 3}
   spawn: 0
 --- !u!4 &1667211470
 Transform:
@@ -474,6 +475,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1667211471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667211468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fakeVel: {x: 0, y: 0, z: 0}
+  realVel: {x: 0, y: 0, z: 0}
+  skewParent: {fileID: 0}
 --- !u!1 &1705256285
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,6 +500,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1705256287}
   - component: {fileID: 1705256286}
+  - component: {fileID: 1705256288}
   m_Layer: 0
   m_Name: ReferenceFrame
   m_TagString: Untagged
@@ -503,36 +520,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8832189e6faa9a4699923635db6609f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedOfLight: 10
+  speedOfLight: 4
   acceleration: {x: 0, y: 0, z: 0}
-  rimler: {x: 0, y: 0, z: 0}
-  rimlerInverse: {x: 0, y: 0, z: 0}
   onBoost:
     m_PersistentCalls:
       m_Calls: []
   boostVel: {x: 0, y: 0, z: 0}
   doBoost: 0
-  recentBoost:
-    e00: 0
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 0
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 0
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 0
-  framePos: {x: 0, y: 0, z: 0}
-  frameVel: {x: 0, y: 0, z: 0}
-  worldVel: {x: 0, y: 0, z: 0}
-  timeAccel: 0
 --- !u!4 &1705256287
 Transform:
   m_ObjectHideFlags: 0
@@ -548,6 +542,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1705256288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705256285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59bdfe52df7e9ef46857e64f7274b2d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frame: {fileID: 1705256286}
+  accelInput: {x: 0, y: 0}
+  accelRate: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

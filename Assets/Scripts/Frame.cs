@@ -11,10 +11,10 @@ public class Frame : MonoBehaviour
 
     public Vector3 acceleration;
 
-    public bool isInterial {get{return acceleration != Vector3.zero;}}
+    public bool isInterial {get{return acceleration != Vector3.zero && rimler != Vector3.zero;}}
 
-    public Vector3 rimler;
-    public Vector3 rimlerInverse;
+    public Vector3 rimler {get{return rimlerInverse/rimlerInverse.sqrMagnitude;}}
+    public Vector3 rimlerInverse {get{return -acceleration/(C*C);}}
 
     public static float Gamma(Vector3 velocity)
     {
@@ -23,9 +23,14 @@ public class Frame : MonoBehaviour
     public static float OppositeGamma(Vector3 properVelocity)
     {
         return 1 / Mathf.Sqrt(1 + properVelocity.sqrMagnitude/(C*C));
+
+
     }
 
     public UnityEvent<Matrix4x4> onBoost = new UnityEvent<Matrix4x4>();
+
+    [SerializeField] Vector3 boostVel;
+    [SerializeField] bool doBoost;
 
     void Awake()
     {
@@ -47,18 +52,6 @@ public class Frame : MonoBehaviour
         }
     }
 
-    [SerializeField] Vector3 boostVel;
-    [SerializeField] bool doBoost;
-    [SerializeField] Matrix4x4 recentBoost;
-
-    public Vector3 framePos;
-    public Vector3 frameVel;
-    public Vector3 worldVel;
-
-    public float timeAccel;
-
-    Vector3 prevAccel;
-
     void OnValidate()
     {
         C = speedOfLight;
@@ -71,39 +64,11 @@ public class Frame : MonoBehaviour
             doBoost = false;
             BoostFrame(boostVel);
         }
-
-        rimlerInverse = -acceleration/(C*C);
-        rimler = rimlerInverse/rimlerInverse.sqrMagnitude;
-    }
-
-    void FixedUpdate()
-    {
-        if (prevAccel != acceleration)
-        {
-            prevAccel = acceleration;
-            timeAccel = 0;
-        }
-
-        if (isInterial)
-        {
-            timeAccel += Time.fixedDeltaTime;
-
-            //frameVel += acceleration * Time.fixedDeltaTime;
-            //worldVel = frameVel * OppositeGamma(frameVel);
-            //framePos += frameVel * Time.fixedDeltaTime;
-
-            //BoostFrame(acceleration * Time.fixedDeltaTime);
-        }
-        else
-        {
-            timeAccel = 0;
-        }
     }
 
     public void BoostFrame(Vector3 vel)
     {
         Matrix4x4 mat = LorentzBoost(vel);
-        recentBoost = mat;
 
         onBoost?.Invoke(mat);
     }

@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 520486600825852014}
+  - component: {fileID: 3642878993632814184}
   - component: {fileID: 1863938375906244966}
   m_Layer: 0
-  m_Name: Thing
+  m_Name: ThingTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,6 +33,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3642878993632814184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021216270786356536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accelerationProper: {x: 0, y: 0, z: 0}
 --- !u!212 &1863938375906244966
 SpriteRenderer:
   m_ObjectHideFlags: 0

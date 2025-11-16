@@ -5,7 +5,7 @@ public class GridSpawner : MonoBehaviour
     [SerializeField] Vector2Int gridWidth = new Vector2Int(40,20);
     [SerializeField] int gridTileSize = 2;
 
-    [SerializeField] TransformST gridObj;
+    [SerializeField] GameObject gridObj;
 
     [SerializeField] bool spawn;
 
@@ -29,7 +29,7 @@ public class GridSpawner : MonoBehaviour
         {
             for (int j = -gridWidth.y/2; j < gridWidth.y/2; j++)
             {
-                TransformST thing = Instantiate(gridObj, new Vector3(gridTileSize*i,gridTileSize*j,0), Quaternion.identity);
+                GameObject thing = Instantiate(gridObj, new Vector3(gridTileSize*i,gridTileSize*j,0), Quaternion.identity);
                 thing.transform.SetParent(this.transform);
             }
         }
