@@ -14,6 +14,7 @@ public class TransformST_Editor : Editor
 
         EditorGUILayout.FloatField("Gamma", transform.gamma);
 
+        /*
         Vector3 vel = EditorGUILayout.Vector3Field("Velocity", transform.velocity);
         Vector3 velProp = EditorGUILayout.Vector3Field("Velocity Proper", transform.velocityProper);
 
@@ -25,5 +26,6 @@ public class TransformST_Editor : Editor
         {
             transform.velocityProper = velProp;
         }
+        */
     }
 }

@@ -6,14 +6,15 @@ public class TransformST : MonoBehaviour
 {
     Frame frame;
 
-    float C {get{return Frame.C;}}
+    public float C {get{return Frame.C;}}
 
     public Vector3 position {get{return transform.position;} set{transform.position = value;}}
     public Vector4 position4 {get{return new Vector4(position.x,position.y,position.z,0);}}
 
-    public float gamma {get{return 1 / Mathf.Sqrt(1 - m_velocity.sqrMagnitude/(C*C));}}
-    public float oppositeGamma {get{return 1 / Mathf.Sqrt(1 + m_velocityProper.sqrMagnitude/(C*C));}} //gamma but it takes in the proper velocity and gives you that factor you need to mult by to get velocity
+    public float gamma {get{return 1 / Mathf.Sqrt(1 - realVel.sqrMagnitude/(C*C));}}
+    //public float oppositeGamma {get{return 1 / Mathf.Sqrt(1 + m_velocityProper.sqrMagnitude/(C*C));}} //gamma but it takes in the proper velocity and gives you that factor you need to mult by to get velocity
 
+    /*
     Vector3 m_velocity;
     Vector3 m_velocityProper;
 
@@ -33,11 +34,14 @@ public class TransformST : MonoBehaviour
     }
 
     public Vector4 velocity4 {get{return new Vector4(velocity.x,velocity.y,velocity.z,C);}}
+    */
 
     //public Vector3 accelerationProper;
 
     public Vector3 fakeVel;
     public Vector3 realVel;
+
+    public Vector4 realVel4 {get{return new Vector4(realVel.x,realVel.y,realVel.z,C);}}
 
     [SerializeField] Transform skewParent;
 
@@ -57,6 +61,9 @@ public class TransformST : MonoBehaviour
         GameObject obj = new GameObject(gameObject.name);
         skewParent = obj.transform;
         transform.SetParent(skewParent);
+
+        skewParent.position = transform.position;
+        transform.localPosition = new Vector3(0,0,0);
     }
 
     void FixedUpdate()
@@ -71,6 +78,7 @@ public class TransformST : MonoBehaviour
         else
         {
             skewParent.position += realVel * Time.fixedDeltaTime;
+            //position += realVel * Time.fixedDeltaTime;
         }
     }
 
@@ -97,13 +105,16 @@ public class TransformST : MonoBehaviour
 
     public void Boost(Matrix4x4 mat)
     {
-        Vector4 newPos = mat * position4;
-        Vector4 newVel = mat * velocity4;
+        //Vector4 newPos = mat * position4;
+        Vector4 newPos = mat * skewParent.position;
+        Vector4 newVel = mat * realVel4;
 
         newVel *= C/newVel.w;
         //newPos -= newPos.w * newVel;
 
-        velocity = newVel;
-        position = newPos;
+        realVel = newVel;
+
+        skewParent.position = newPos;
+        //position = newPos;
     }
 }
