@@ -23,14 +23,18 @@ public class Frame : MonoBehaviour
     public static float OppositeGamma(Vector3 properVelocity)
     {
         return 1 / Mathf.Sqrt(1 + properVelocity.sqrMagnitude/(C*C));
-
-
     }
 
     public UnityEvent<Matrix4x4> onBoost = new UnityEvent<Matrix4x4>();
 
     [SerializeField] Vector3 boostVel;
     [SerializeField] bool doBoost;
+
+    public Vector3 framePos;
+    public Vector3 frameVel;
+    public Vector3 frameProperVel;
+
+    public Matrix4x4 frameVelMatrix;
 
     void Awake()
     {
@@ -64,6 +68,16 @@ public class Frame : MonoBehaviour
             doBoost = false;
             BoostFrame(boostVel);
         }
+    }
+
+    void FixedUpdate()
+    {
+        frameProperVel += acceleration * Time.fixedDeltaTime;
+        frameVel = frameProperVel*OppositeGamma(frameProperVel);
+
+        framePos += frameVel * Time.fixedDeltaTime;
+
+        frameVelMatrix = LorentzBoost(-frameVel);
     }
 
     public void BoostFrame(Vector3 vel)

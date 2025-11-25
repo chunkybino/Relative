@@ -4,26 +4,61 @@ public class GuyController : MonoBehaviour
 {
     public Frame frame;
 
+    [SerializeField] PlayerInput input;
+
     [SerializeField] Vector3 accelInput;
 
     [SerializeField] Vector3 accel;
     [SerializeField] float maxAccel = 2;
-    [SerializeField] float accelRate = 1;
+    [SerializeField] float accelRate = 4;
 
-    void FixedUpdate()
+    //[SerializeField] TransformST referenceAnchor; //object that represents the basis reference frame, used when we need to reset ourself using space
+
+    [SerializeField] Transform cameraTransform;
+    [SerializeField] float lookSpeed = 1;
+
+    void Awake()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    void Update()
+    {
+        //look around
+        Vector2 angleVector = input.mouseDelta * lookSpeed;
+
+        if (cameraTransform != null)
+        {
+            cameraTransform.eulerAngles = cameraTransform.eulerAngles + new Vector3(-angleVector.y,angleVector.x,0);
+        }
+
         accelInput = Vector2.zero;
-        if (Input.GetKey("a")) accelInput.x--;
-        if (Input.GetKey("d")) accelInput.x++;
-        if (Input.GetKey("s")) accelInput.y--;
-        if (Input.GetKey("w")) accelInput.y++;
-        if (Input.GetKey("e")) accelInput.z++;
-        if (Input.GetKey("q")) accelInput.z--;
+        if (input.left) accelInput.x--;
+        if (input.right) accelInput.x++;
+        if (input.forward) accelInput.z++;
+        if (input.backward) accelInput.z--;
+
+        if (input.down) accelInput.y--;
+        if (input.up) accelInput.y++;
 
         accelInput = accelInput.normalized;
 
-        accel = Vector3.MoveTowards(accel, accelInput*maxAccel, accelRate*Time.fixedDeltaTime);
+        float currentCameraAngle = cameraTransform.eulerAngles.y * Mathf.Deg2Rad;
+
+        Vector3 cameraDirectionZ = new Vector3(Mathf.Sin(currentCameraAngle), 0, Mathf.Cos(currentCameraAngle));
+        Vector3 cameraDirectionX = new Vector3(Mathf.Cos(currentCameraAngle), 0, -Mathf.Sin(currentCameraAngle));
+
+        accelInput = cameraDirectionX*accelInput.x + new Vector3(0,accelInput.y,0) + cameraDirectionZ*accelInput.z;
+
+        accel = Vector3.MoveTowards(accel, accelInput*maxAccel, accelRate*Time.deltaTime);
 
         frame.acceleration = accel;
+
+        
+        if (input.brake)// && referenceAnchor != null)
+        {
+            accel = Vector3.zero;
+            frame.frameProperVel = Vector3.zero;
+        }
     }
 }

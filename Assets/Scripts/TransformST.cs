@@ -45,6 +45,8 @@ public class TransformST : MonoBehaviour
 
     [SerializeField] Transform skewParent;
 
+    [SerializeField] Vector3 basePosition;
+
     void OnEnable()
     {
         frame = Frame.singleton;
@@ -54,6 +56,8 @@ public class TransformST : MonoBehaviour
 
     void Start()
     {
+        basePosition = position;
+
         SpawnSkewerThing();
     }
     void SpawnSkewerThing()
@@ -68,6 +72,9 @@ public class TransformST : MonoBehaviour
 
     void FixedUpdate()
     {
+        BoostFromBase();
+
+        /*
         if (frame.isInterial)
         {
             fakeVel -= frame.acceleration * Time.fixedDeltaTime;
@@ -79,7 +86,10 @@ public class TransformST : MonoBehaviour
         {
             skewParent.position += realVel * Time.fixedDeltaTime;
             //position += realVel * Time.fixedDeltaTime;
+
+            SetContract();
         }
+        */
     }
 
     public void ContractRimler(Vector3 rimler)
@@ -92,15 +102,29 @@ public class TransformST : MonoBehaviour
 
         skewParent.position += realVel * (rimlerDot/rimler.magnitude) * Time.fixedDeltaTime;
 
+        SetContract();
+
+        /*
         skewParent.localScale = new Vector3(Mathf.Sqrt(1 - realVel.sqrMagnitude/(C*C)), 1, 1);
 
         //Quaternion currentQuart = skewParent.rotation;
         Quaternion directionQuart = Quaternion.FromToRotation(new Vector3(1,0,0), realVel);
         skewParent.rotation = directionQuart;
         transform.localRotation = Quaternion.Inverse(directionQuart);
+        */
         
         //skewParent.position = position;
         //transform.localPosition = Vector3.zero;
+    }
+
+    void SetContract()
+    {
+        skewParent.localScale = new Vector3(Mathf.Sqrt(1 - realVel.sqrMagnitude/(C*C)), 1, 1);
+
+        //Quaternion currentQuart = skewParent.rotation;
+        Quaternion directionQuart = Quaternion.FromToRotation(new Vector3(1,0,0), realVel);
+        skewParent.rotation = directionQuart;
+        transform.localRotation = Quaternion.Inverse(directionQuart);
     }
 
     public void Boost(Matrix4x4 mat)
@@ -110,11 +134,46 @@ public class TransformST : MonoBehaviour
         Vector4 newVel = mat * realVel4;
 
         newVel *= C/newVel.w;
-        //newPos -= newPos.w * newVel;
+        newPos -= newPos.w * newVel;
 
         realVel = newVel;
 
         skewParent.position = newPos;
         //position = newPos;
+    }
+
+    public void BoostFromBase()
+    {
+        Matrix4x4 mat = frame.frameVelMatrix;
+
+        Vector3 relativePos = basePosition - frame.framePos;
+
+        //Vector4 newPos = mat * position4;
+        Vector4 newPos = mat * (Vector4)relativePos;
+        Vector4 newVel = mat * new Vector4(0,0,0,C);
+
+        //print(newPos.w);
+
+        newVel *= C/newVel.w;
+        //newPos -= newPos.w * newVel / C;
+
+        realVel = newVel;
+
+        //skewParent.position = newPos;
+        //position = newPos;
+
+        if (realVel != Vector3.zero)
+        {
+            Vector3 posInVelDirection = realVel*Vector3.Dot(relativePos, realVel)/realVel.sqrMagnitude;
+            Vector3 posOutVelDirection = relativePos - posInVelDirection;
+
+            skewParent.position = posInVelDirection/gamma + posOutVelDirection;
+        }
+        else
+        {
+            skewParent.position = newPos;
+        }
+
+        SetContract();
     }
 }

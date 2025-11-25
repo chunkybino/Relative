@@ -41,6 +41,8 @@ Shader "Unlit/ShaderST"
             float _C;
             float4 _Velocity;
 
+            float4 _Color;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -78,6 +80,9 @@ Shader "Unlit/ShaderST"
                 fixed4 col = tex2D(_MainTex, i.uv);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
+
+                col *= _Color;
+
                 return col;
             }
             ENDCG
