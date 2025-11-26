@@ -17,6 +17,13 @@ public class GuyController : MonoBehaviour
     [SerializeField] Transform cameraTransform;
     [SerializeField] float lookSpeed = 1;
 
+    //makes it so that object rendering is is based off on distance from camera and light travel time
+    //really disorienting
+    public static bool onLSD; 
+    bool lsdButtonDirty;
+
+    //[SerializeField] Shader theShaderThatPutsYouOnLSD;
+
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -53,12 +60,35 @@ public class GuyController : MonoBehaviour
         accel = Vector3.MoveTowards(accel, accelInput*maxAccel, accelRate*Time.deltaTime);
 
         frame.acceleration = accel;
-
         
         if (input.brake)// && referenceAnchor != null)
         {
             accel = Vector3.zero;
             frame.frameProperVel = Vector3.zero;
+        }
+
+        if (input.enableLSD)
+        {   
+            if (!lsdButtonDirty)
+            {
+                lsdButtonDirty = true;
+                onLSD = !onLSD;
+
+                if (onLSD)
+                {
+                    Shader.EnableKeyword("LSD_ON");
+                    Shader.DisableKeyword("LSD_OFF");
+                }
+                else
+                {
+                    Shader.EnableKeyword("LSD_OFF");
+                    Shader.DisableKeyword("LSD_ON");
+                }
+            }
+        }
+        else
+        {
+            lsdButtonDirty = false;
         }
     }
 }

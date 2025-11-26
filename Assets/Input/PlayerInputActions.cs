@@ -98,6 +98,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EnableLSD"",
+                    ""type"": ""Button"",
+                    ""id"": ""0cddd380-4528-4c06-899c-4880d61e9ba8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -188,6 +197,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""MouseDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""974b8299-5bba-4113-b417-e6fb3194469f"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnableLSD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -204,6 +224,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Backward = m_Player.FindAction("Backward", throwIfNotFound: true);
         m_Player_MouseDelta = m_Player.FindAction("MouseDelta", throwIfNotFound: true);
         m_Player_Brake = m_Player.FindAction("Brake", throwIfNotFound: true);
+        m_Player_EnableLSD = m_Player.FindAction("EnableLSD", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -278,6 +299,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Backward;
     private readonly InputAction m_Player_MouseDelta;
     private readonly InputAction m_Player_Brake;
+    private readonly InputAction m_Player_EnableLSD;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -290,6 +312,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Backward => m_Wrapper.m_Player_Backward;
         public InputAction @MouseDelta => m_Wrapper.m_Player_MouseDelta;
         public InputAction @Brake => m_Wrapper.m_Player_Brake;
+        public InputAction @EnableLSD => m_Wrapper.m_Player_EnableLSD;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -323,6 +346,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Brake.started += instance.OnBrake;
             @Brake.performed += instance.OnBrake;
             @Brake.canceled += instance.OnBrake;
+            @EnableLSD.started += instance.OnEnableLSD;
+            @EnableLSD.performed += instance.OnEnableLSD;
+            @EnableLSD.canceled += instance.OnEnableLSD;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -351,6 +377,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Brake.started -= instance.OnBrake;
             @Brake.performed -= instance.OnBrake;
             @Brake.canceled -= instance.OnBrake;
+            @EnableLSD.started -= instance.OnEnableLSD;
+            @EnableLSD.performed -= instance.OnEnableLSD;
+            @EnableLSD.canceled -= instance.OnEnableLSD;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -378,5 +407,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnBackward(InputAction.CallbackContext context);
         void OnMouseDelta(InputAction.CallbackContext context);
         void OnBrake(InputAction.CallbackContext context);
+        void OnEnableLSD(InputAction.CallbackContext context);
     }
 }
