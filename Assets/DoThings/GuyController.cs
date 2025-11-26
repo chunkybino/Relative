@@ -22,8 +22,6 @@ public class GuyController : MonoBehaviour
     public static bool onLSD; 
     bool lsdButtonDirty;
 
-    //[SerializeField] Shader theShaderThatPutsYouOnLSD;
-
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;

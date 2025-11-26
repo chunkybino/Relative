@@ -10,7 +10,6 @@ public class RendererST : MonoBehaviour
 
     public MeshRenderer renderer;
     public MeshFilter meshFilter;
-    public Mesh mesh;
 
     MaterialPropertyBlock matBlock;
 

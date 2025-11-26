@@ -6550,7 +6550,6 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 1}
   renderer: {fileID: 385772433}
   meshFilter: {fileID: 385772434}
-  mesh: {fileID: 0}
 --- !u!114 &385772436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6567,6 +6566,7 @@ MonoBehaviour:
   realVel: {x: 0, y: 0, z: 0}
   skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
+  baseVelocity: {x: 0, y: 0, z: 0}
 --- !u!4 &385772437
 Transform:
   m_ObjectHideFlags: 0
@@ -6792,7 +6792,6 @@ MonoBehaviour:
   color: {r: 0.7169812, g: 0.19277322, b: 0.19277322, a: 1}
   renderer: {fileID: 596045959}
   meshFilter: {fileID: 596045960}
-  mesh: {fileID: 0}
 --- !u!114 &596045962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6809,6 +6808,7 @@ MonoBehaviour:
   realVel: {x: 0, y: 0, z: 0}
   skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
+  baseVelocity: {x: 0, y: 0, z: 0}
 --- !u!4 &596045963
 Transform:
   m_ObjectHideFlags: 0
@@ -7063,7 +7063,6 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 1}
   renderer: {fileID: 1109313243}
   meshFilter: {fileID: 1109313244}
-  mesh: {fileID: 0}
 --- !u!114 &1109313246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7080,6 +7079,7 @@ MonoBehaviour:
   realVel: {x: 0, y: 0, z: 0}
   skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
+  baseVelocity: {x: 0, y: 0, z: 0}
 --- !u!4 &1109313247
 Transform:
   m_ObjectHideFlags: 0
@@ -7160,6 +7160,7 @@ MonoBehaviour:
   realVel: {x: 0, y: 0, z: 0}
   skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
+  baseVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &1705256285
 GameObject:
   m_ObjectHideFlags: 0
@@ -7191,7 +7192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8832189e6faa9a4699923635db6609f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedOfLight: 4
+  speedOfLight: 10
   acceleration: {x: 0, y: 0, z: 0}
   onBoost:
     m_PersistentCalls:
@@ -7435,7 +7436,6 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 1}
   renderer: {fileID: 1877630294}
   meshFilter: {fileID: 1877630295}
-  mesh: {fileID: 0}
 --- !u!114 &1877630297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7452,6 +7452,7 @@ MonoBehaviour:
   realVel: {x: 0, y: 0, z: 0}
   skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
+  baseVelocity: {x: 0, y: 0, z: 0}
 --- !u!4 &1877630298
 Transform:
   m_ObjectHideFlags: 0
@@ -7556,7 +7557,6 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 1}
   renderer: {fileID: 1914295576}
   meshFilter: {fileID: 1914295577}
-  mesh: {fileID: 0}
 --- !u!114 &1914295579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7573,6 +7573,7 @@ MonoBehaviour:
   realVel: {x: 0, y: 0, z: 0}
   skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
+  baseVelocity: {x: 0, y: 0, z: 0}
 --- !u!4 &1914295580
 Transform:
   m_ObjectHideFlags: 0
@@ -7677,7 +7678,6 @@ MonoBehaviour:
   color: {r: 0.103729084, g: 0.39015493, b: 0.5943396, a: 1}
   renderer: {fileID: 2014696373}
   meshFilter: {fileID: 2014696374}
-  mesh: {fileID: 0}
 --- !u!114 &2014696376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7694,6 +7694,7 @@ MonoBehaviour:
   realVel: {x: 0, y: 0, z: 0}
   skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
+  baseVelocity: {x: 0, y: 0, z: 0}
 --- !u!4 &2014696377
 Transform:
   m_ObjectHideFlags: 0

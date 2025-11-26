@@ -46,6 +46,7 @@ public class TransformST : MonoBehaviour
     [SerializeField] Transform skewParent;
 
     [SerializeField] Vector3 basePosition;
+    [SerializeField] Vector3 baseVelocity;
 
     void OnEnable()
     {
@@ -73,6 +74,8 @@ public class TransformST : MonoBehaviour
     void FixedUpdate()
     {
         BoostFromBase();
+
+        basePosition += baseVelocity * Time.fixedDeltaTime;
 
         /*
         if (frame.isInterial)
@@ -150,7 +153,7 @@ public class TransformST : MonoBehaviour
 
         //Vector4 newPos = mat * position4;
         Vector4 newPos = mat * (Vector4)relativePos;
-        Vector4 newVel = mat * new Vector4(0,0,0,C);
+        Vector4 newVel = mat * new Vector4(baseVelocity.x,baseVelocity.y,baseVelocity.z,C);
 
         //print(newPos.w);
 
