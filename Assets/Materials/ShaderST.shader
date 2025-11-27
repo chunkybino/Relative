@@ -70,7 +70,7 @@ Shader "Unlit/ShaderST"
                 float4 vertex = mul(UNITY_MATRIX_M,IN.vertex);
                 float4 vel = _Velocity;
 
-                float3 worldModelPos = UNITY_MATRIX_M[3].xyz;
+                float3 worldModelPos = float3(UNITY_MATRIX_M[0].w,UNITY_MATRIX_M[1].w,UNITY_MATRIX_M[2].w);
                 float3 vertexWorldOffset = vertex.xyz - worldModelPos;
 
                 float4 timeBackPos = vertex;
