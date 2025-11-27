@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 
 public class TransformST : MonoBehaviour
@@ -48,6 +49,17 @@ public class TransformST : MonoBehaviour
     [SerializeField] Vector3 basePosition;
     [SerializeField] Vector3 baseVelocity;
 
+    public int prevPosWriteIndex = 0;
+    public PrevPosData[] prevPositions = new PrevPosData[128];
+
+    public float currentTime = 0;
+
+    [System.Serializable]
+    public struct PrevPosData
+    {
+        public Vector4 pos;
+    }
+
     void OnEnable()
     {
         frame = Frame.singleton;
@@ -76,6 +88,10 @@ public class TransformST : MonoBehaviour
         BoostFromBase();
 
         basePosition += baseVelocity * Time.fixedDeltaTime;
+
+        UpdatePrevPos();
+
+        currentTime += Time.fixedDeltaTime;
 
         /*
         if (frame.isInterial)
@@ -178,5 +194,13 @@ public class TransformST : MonoBehaviour
         }
 
         SetContract();
+    }
+
+    void UpdatePrevPos()
+    {
+        prevPositions[prevPosWriteIndex].pos = basePosition - frame.framePos;
+        prevPositions[prevPosWriteIndex].pos.w = currentTime;
+        prevPosWriteIndex++;
+        if (prevPosWriteIndex >= prevPositions.Length) prevPosWriteIndex = 0;
     }
 }
