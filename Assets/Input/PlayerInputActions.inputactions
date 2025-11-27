@@ -76,15 +76,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "EnableLSD",
-                    "type": "Button",
-                    "id": "0cddd380-4528-4c06-899c-4880d61e9ba8",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -173,17 +164,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "MouseDelta",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "974b8299-5bba-4113-b417-e6fb3194469f",
-                    "path": "<Keyboard>/m",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "EnableLSD",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

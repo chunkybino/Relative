@@ -19,8 +19,6 @@ public class PlayerInput : MonoBehaviour
 
     public bool brake {get{return m_brake.IsPressed();}}
 
-    public bool enableLSD {get{return m_enableLSD.IsPressed();}}
-
     public Vector2 mouseDelta {get{return m_mouse.ReadValue<Vector2>();}}
 
     [HideInInspector] public InputAction m_up;
@@ -33,8 +31,6 @@ public class PlayerInput : MonoBehaviour
     [HideInInspector] public InputAction m_mouse;
 
     [HideInInspector] public InputAction m_brake;
-
-    [HideInInspector] public InputAction m_enableLSD;
 
     void Awake()
     {
@@ -63,8 +59,6 @@ public class PlayerInput : MonoBehaviour
         m_backward = inputs.Player.Backward;
 
         m_brake = inputs.Player.Brake;
-
-        m_enableLSD = inputs.Player.EnableLSD;
 
         m_mouse = inputs.Player.MouseDelta;
     }

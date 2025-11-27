@@ -19,8 +19,9 @@ public class GuyController : MonoBehaviour
 
     //makes it so that object rendering is is based off on distance from camera and light travel time
     //really disorienting
-    public static bool onLSD; 
-    bool lsdButtonDirty;
+    static bool onLSD; 
+    static bool advancedTimeBack; 
+    static bool colorByTime; 
 
     void Awake()
     {
@@ -65,28 +66,61 @@ public class GuyController : MonoBehaviour
             frame.frameProperVel = Vector3.zero;
         }
 
-        if (input.enableLSD)
+        
+        if (Input.GetKeyDown("8"))
         {   
-            if (!lsdButtonDirty)
-            {
-                lsdButtonDirty = true;
-                onLSD = !onLSD;
+            ToggleLSD();
+        }
+        if (Input.GetKeyDown("9"))
+        {   
+            ToggleAdvancedTimeBack();
+        }
+        if (Input.GetKeyDown("0"))
+        {   
+            ToggleColorByTime();
+        }
+    }
 
-                if (onLSD)
-                {
-                    Shader.EnableKeyword("LSD_ON");
-                    Shader.DisableKeyword("LSD_OFF");
-                }
-                else
-                {
-                    Shader.EnableKeyword("LSD_OFF");
-                    Shader.DisableKeyword("LSD_ON");
-                }
-            }
+    void ToggleLSD()
+    {
+        if (!onLSD)
+        {
+            Shader.EnableKeyword("LSD_ON");
+            Shader.DisableKeyword("LSD_OFF");
         }
         else
         {
-            lsdButtonDirty = false;
+            Shader.EnableKeyword("LSD_OFF");
+            Shader.DisableKeyword("LSD_ON");
         }
+        onLSD = !onLSD;
+    }
+    void ToggleAdvancedTimeBack()
+    {
+        if (!advancedTimeBack)
+        {
+            Shader.EnableKeyword("ADVANCED_TIMEBACK_ON");
+            Shader.DisableKeyword("ADVANCED_TIMEBACK_OFF");
+        }
+        else
+        {
+            Shader.EnableKeyword("ADVANCED_TIMEBACK_OFF");
+            Shader.DisableKeyword("ADVANCED_TIMEBACK_ON");
+        }
+        advancedTimeBack = !advancedTimeBack;
+    }
+    void ToggleColorByTime()
+    {
+        if (!colorByTime)
+        {
+            Shader.EnableKeyword("COLOR_BY_TIME_ON");
+            Shader.DisableKeyword("COLOR_BY_TIME_OFF");
+        }
+        else
+        {
+            Shader.EnableKeyword("COLOR_BY_TIME_OFF");
+            Shader.DisableKeyword("COLOR_BY_TIME_ON");
+        }
+        colorByTime = !colorByTime;
     }
 }

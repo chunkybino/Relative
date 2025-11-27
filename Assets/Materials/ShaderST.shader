@@ -25,7 +25,7 @@ Shader "Unlit/ShaderST"
             #pragma multi_compile ADVANCED_TIMEBACK_OFF ADVANCED_TIMEBACK_ON
             #pragma multi_compile LSD_OFF LSD_ON
 
-            #pragma multi_compile COLOR_BY_TIME_ON COLOR_BY_TIME_OFF
+            #pragma multi_compile COLOR_BY_TIME_OFF COLOR_BY_TIME_ON
 
             #include "UnityCG.cginc"
             #include "ShaderFunc.hlsl"
@@ -75,7 +75,7 @@ Shader "Unlit/ShaderST"
 
                 float4 timeBackPos = vertex;
 
-                #ifdef ADVANCED_TIMEBACK_OFF
+                #ifdef ADVANCED_TIMEBACK_ON
                     //binary search the buffer
 
                     int minBound = 0;
