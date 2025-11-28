@@ -9,6 +9,7 @@ Shader "Unlit/ShaderST"
         _BaseVel("BaseVel", Vector) = (0,0,0,0)
         _RealVel("RealVel", Vector) = (0,0,0,0)
 
+        _BaseTime("BaseTime", Float) = 0
         _ProperTime("ProperTime", Float) = 0
 
         _C("C", Float) = 1
@@ -66,6 +67,7 @@ Shader "Unlit/ShaderST"
             float3 _BaseVel;
             float3 _RealVel;
 
+            float _BaseTime;
             float _ProperTime;
 
             float3 _FramePos;
@@ -89,6 +91,7 @@ Shader "Unlit/ShaderST"
                 v2f OUT;
 
                 float4x4 frameVelMatrix = LorentzBoost(_FrameVel, _C);
+                float4x4 frameVelMatrixInverse = LorentzBoost(-_FrameVel, _C);
 
                 //view pos
                 float4 vertex = mul(UNITY_MATRIX_M,IN.vertex);
@@ -161,34 +164,25 @@ Shader "Unlit/ShaderST"
                 #else
                     //based on how far the object is, roll back time a bit, this is cause the light takes a bit to travel
 
-                    float3 pos_C = (_BasePos+vertexWorldOffset-_FramePos)/_C; //just the position adjusted for the speed of light
-                    float3 vel_C = _BaseVel/_C; //just the velocity adjusted for the speed of light
+                    float3 pos_C = vertex/_C; //just the position adjusted for the speed of light
+                    float3 vel_C = _RealVel/_C; //just the velocity adjusted for the speed of light
 
                     float posVel_C_dot = dot(pos_C,vel_C);
                     float vel_C_SqrMag = dot(vel_C,vel_C);
                     float pos_C_SqrMag = dot(pos_C,pos_C);
 
                     float realTimeStepBack = ( -(posVel_C_dot) + sqrt( (posVel_C_dot*posVel_C_dot) - (vel_C_SqrMag - 1)*(pos_C_SqrMag) )) / (vel_C_SqrMag - 1);
-                    //float realTimeStepBack = -sqrt(pos_C_SqrMag);
 
-                    //timeBackPos = float4(_BasePos+vertexWorldOffset-_FramePos + _BaseVel*realTimeStepBack, realTimeStepBack);
-
-                    //float measuredTimeForward = dot(_FrameVel, timeBackPos.xyz)/(_C*_C);
-
-                    timeBackPos = mul(frameVelMatrix, timeBackPos);
+                    timeBackPos = float4(vertex + _RealVel*realTimeStepBack, realTimeStepBack);
 
                     timeBackPos.w = 1;
 
                     #ifdef LSD_ON
                         vertex = timeBackPos;
-                        OUT.timeBack = realTimeStepBack + _PrevPosCurrentTime;
+                        OUT.timeBack = realTimeStepBack / Gamma(_RealVel, _C);
+                        OUT.timeBack += _ProperTime + dot(_FrameVel, vertexWorldOffset)/(_C*_C);
                     #else
-
                         OUT.timeBack = _ProperTime + dot(_FrameVel, vertexWorldOffset)/(_C*_C);
-                        //OUT.timeBack = _ProperTime;
-
-                        //timeBackPos = mul(frameVelMatrix, float4(_BasePos, OUT.timeBack));
-
                     #endif
 
                     

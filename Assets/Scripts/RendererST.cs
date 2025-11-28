@@ -51,6 +51,7 @@ public class RendererST : MonoBehaviour
         matBlock.SetVector("_BaseLengthContractionVector", transformST.baseLengthContractionVector);
         matBlock.SetVector("_RealLengthContractionVector", transformST.realLengthContractionVector);
 
+        matBlock.SetFloat("_BaseTime", transformST.currentBaseTime);
         matBlock.SetFloat("_ProperTime", transformST.properClock);
 
         matBlock.SetVector("_FramePos", frame.framePos);
