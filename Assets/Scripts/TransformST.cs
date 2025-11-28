@@ -46,18 +46,22 @@ public class TransformST : MonoBehaviour
 
     [SerializeField] Transform skewParent;
 
-    [SerializeField] Vector3 basePosition;
-    [SerializeField] Vector3 baseVelocity;
+    public Vector3 basePosition;
+    public Vector3 baseVelocity;
+
+    public Vector4 baseLengthContractionVector = new Vector4(0,0,0,1);//xyz is direction, w is magnitude
+    public Vector4 realLengthContractionVector = new Vector4(0,0,0,1);//xyz is direction, w is magnitude
 
     public int prevPosWriteIndex = 0;
     public PrevPosData[] prevPositions = new PrevPosData[128];
 
-    public float currentTime = 0;
+    public float currentRealTime = 0;
 
     [System.Serializable]
     public struct PrevPosData
     {
-        public Vector4 pos;
+        public Vector4 pos; //w coord is time
+        public Vector4 vel; //w coord is length contraction factor (1/gamma)
     }
 
     void OnEnable()
@@ -71,7 +75,7 @@ public class TransformST : MonoBehaviour
     {
         basePosition = position;
 
-        SpawnSkewerThing();
+        //SpawnSkewerThing();
     }
     void SpawnSkewerThing()
     {
@@ -91,7 +95,13 @@ public class TransformST : MonoBehaviour
 
         UpdatePrevPos();
 
-        currentTime += Time.fixedDeltaTime;
+        currentRealTime += Time.fixedDeltaTime;
+
+        //length contraction vector time
+        baseLengthContractionVector = (Vector4)baseVelocity.normalized; 
+        baseLengthContractionVector.w = 1/Frame.Gamma(baseVelocity);
+        realLengthContractionVector = (Vector4)realVel.normalized; 
+        realLengthContractionVector.w = 1/gamma;
 
         /*
         if (frame.isInterial)
@@ -171,8 +181,6 @@ public class TransformST : MonoBehaviour
         Vector4 newPos = mat * (Vector4)relativePos;
         Vector4 newVel = mat * new Vector4(baseVelocity.x,baseVelocity.y,baseVelocity.z,C);
 
-        //print(newPos.w);
-
         newVel *= C/newVel.w;
         //newPos -= newPos.w * newVel / C;
 
@@ -181,25 +189,33 @@ public class TransformST : MonoBehaviour
         //skewParent.position = newPos;
         //position = newPos;
 
+        currentRealTime = frame.currentRealTime + Vector3.Dot(relativePos,frame.frameVel/(C*C)); //dot the distacne with the frame velocity to see what time this object gets observed by the frame
+
         if (realVel != Vector3.zero)
         {
             Vector3 posInVelDirection = realVel*Vector3.Dot(relativePos, realVel)/realVel.sqrMagnitude;
             Vector3 posOutVelDirection = relativePos - posInVelDirection;
 
-            skewParent.position = posInVelDirection/gamma + posOutVelDirection;
+            //skewParent.position = posInVelDirection/gamma + posOutVelDirection;
+            position = posInVelDirection/gamma + posOutVelDirection;
         }
         else
         {
-            skewParent.position = newPos;
+            //skewParent.position = newPos;
+            position = newPos;
         }
 
-        SetContract();
+        //SetContract();
     }
 
     void UpdatePrevPos()
     {
-        prevPositions[prevPosWriteIndex].pos = basePosition - frame.framePos;
-        prevPositions[prevPosWriteIndex].pos.w = currentTime;
+        prevPositions[prevPosWriteIndex].pos = basePosition;
+        prevPositions[prevPosWriteIndex].pos.w = currentRealTime;
+
+        prevPositions[prevPosWriteIndex].vel = baseVelocity;
+        prevPositions[prevPosWriteIndex].vel.w = 1/Frame.Gamma(baseVelocity);
+
         prevPosWriteIndex++;
         if (prevPosWriteIndex >= prevPositions.Length) prevPosWriteIndex = 0;
     }

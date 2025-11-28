@@ -19,9 +19,9 @@ public class GuyController : MonoBehaviour
 
     //makes it so that object rendering is is based off on distance from camera and light travel time
     //really disorienting
-    static bool onLSD; 
-    static bool advancedTimeBack; 
-    static bool colorByTime; 
+    [SerializeField] bool onLSD; 
+    [SerializeField] bool advancedTimeBack; 
+    [SerializeField] bool colorByTime; 
 
     void Awake()
     {

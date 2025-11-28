@@ -37,6 +37,8 @@ public class Frame : MonoBehaviour
 
     public Matrix4x4 frameVelMatrix;
 
+    public float currentRealTime;
+
     void Awake()
     {
         CheckSingleton();
@@ -79,6 +81,8 @@ public class Frame : MonoBehaviour
         framePos += frameVel * Time.fixedDeltaTime;
 
         frameVelMatrix = LorentzBoost(-frameVel);
+
+        currentRealTime += Gamma(frameVel) * Time.fixedDeltaTime;
     }
 
     public void BoostFrame(Vector3 vel)
@@ -91,18 +95,20 @@ public class Frame : MonoBehaviour
     public static Matrix4x4 LorentzBoost(Vector3 vel)
     {
         vel = vel/C;
-        float gamma = Gamma(vel);
+        float gamma = 1/Mathf.Sqrt(1-vel.sqrMagnitude); //dont call the gamma function here since velocity has already been normalized to C, instead write out formula again
 
         float gamSqrWeird = gamma*gamma/(1+gamma);
 
+        /*
         Matrix4x4 mat = new Matrix4x4();
-
+        
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
                 float result = gamSqrWeird;
                 if (i == 3 || j == 3) result = gamma;
+                if (i == 3 ^ j == 3) result *= -1;
 
                 if (i < 3) result *= vel[i];
                 if (j < 3) result *= vel[j];
@@ -112,6 +118,14 @@ public class Frame : MonoBehaviour
                 mat[i,j] = result;
             }
         }
+        */
+
+        Matrix4x4 mat = new Matrix4x4(
+            new Vector4(1+gamSqrWeird*(vel.x*vel.x), gamSqrWeird*(vel.x*vel.y),   gamSqrWeird*(vel.x*vel.z),   -gamma*vel.x), 
+            new Vector4(gamSqrWeird*(vel.x*vel.y),   1+gamSqrWeird*(vel.y*vel.y), gamSqrWeird*(vel.y*vel.z),   -gamma*vel.y), 
+            new Vector4(gamSqrWeird*(vel.x*vel.z),   gamSqrWeird*(vel.y*vel.z),   1+gamSqrWeird*(vel.z*vel.z), -gamma*vel.z),
+            new Vector4(-gamma*vel.x, -gamma*vel.y, -gamma*vel.z, gamma)
+        );
 
         return mat;
     }

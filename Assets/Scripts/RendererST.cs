@@ -4,6 +4,8 @@ using UnityEngine.Rendering;
 [ExecuteAlways]
 public class RendererST : MonoBehaviour
 {
+    Frame frame;
+
     public TransformST transformST;
 
     public Color color = Color.white;
@@ -18,7 +20,9 @@ public class RendererST : MonoBehaviour
     bool prevPosBufferDirty;
 
     void OnEnable()
-    {
+    {   
+        frame = Frame.singleton;
+
         if (prevPosBuffer == null) CreatePrevPosBuffer();
     }
     void OnDisable()
@@ -40,10 +44,19 @@ public class RendererST : MonoBehaviour
 
         matBlock.SetVector("_Color", color);
 
-        matBlock.SetVector("_Velocity", transformST.realVel);
+        matBlock.SetVector("_BasePos", transformST.basePosition);
+        matBlock.SetVector("_BaseVel", transformST.baseVelocity);
+        matBlock.SetVector("_RealVel", transformST.realVel);
+
+        matBlock.SetVector("_BaseLengthContractionVector", transformST.baseLengthContractionVector);
+        matBlock.SetVector("_RealLengthContractionVector", transformST.realLengthContractionVector);
+
+        matBlock.SetVector("_FramePos", frame.framePos);
+        matBlock.SetVector("_FrameVel", frame.frameVel);
 
         matBlock.SetFloat("_C", transformST.C);
 
+        //previous positions stuff
         if (prevPosBufferDirty)
         {
             prevPosBufferDirty = false;
@@ -51,7 +64,7 @@ public class RendererST : MonoBehaviour
         }
         matBlock.SetFloat("_PrevPosCount", transformST.prevPositions.Length);
         matBlock.SetFloat("_PrevPosCurrentIndex", transformST.prevPosWriteIndex);
-        matBlock.SetFloat("_PrevPosCurrentTime", transformST.currentTime);
+        matBlock.SetFloat("_PrevPosCurrentTime", frame.currentRealTime);
 
         renderer.SetPropertyBlock(matBlock);
     }

@@ -4,6 +4,15 @@ using System.Collections;
 
 public static class UFunc
 {
+    public static float SqrMagnitudeH(Vector4 v)
+    {
+        return v.x*v.x + v.y*v.y + v.z*v.z - v.w*v.w;
+    }
+    public static float DotH(Vector4 v1, Vector4 v2)
+    {
+        return v1.x*v2.x + v1.y*v2.y + v1.z*v2.z - v1.w*v2.w;
+    }
+
     //returns index of vector component with largest magnitude
     public static int VectorSignificant(Vector4 v)
     {

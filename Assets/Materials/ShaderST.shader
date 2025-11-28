@@ -5,9 +5,17 @@ Shader "Unlit/ShaderST"
         _MainTex ("Texture", 2D) = "white" {}
         _Color("Color", Color) = (1,1,1,1)
 
-        _Velocity("Velocity", Vector) = (0,0,0,0)
+        _BasePos("BasePos", Vector) = (0,0,0,0)
+        _BaseVel("BaseVel", Vector) = (0,0,0,0)
+        _RealVel("RealVel", Vector) = (0,0,0,0)
 
         _C("C", Float) = 1
+
+        _BaseLengthContractionVector("BaseLengthContractionVector", Vector) = (0,0,0,1)
+        _RealLengthContractionVector("RealLengthContractionVector", Vector) = (0,0,0,1)
+
+        _FramePos("FramePos", Vector) = (0,0,0,0)
+        _FrameVel("FrameVel", Vector) = (0,0,0,0)
 
         _PrevPosCount("PrevPosCount", Float) = 64
         _PrevPosCurrentIndex("PrevPosCurrentIndex", Float) = 0
@@ -48,13 +56,23 @@ Shader "Unlit/ShaderST"
             float4 _MainTex_ST;
 
             float _C;
-            float4 _Velocity;
+
+            float4 _BaseLengthContractionVector;
+            float4 _RealLengthContractionVector;
+
+            float3 _BasePos;
+            float3 _BaseVel;
+            float3 _RealVel;
+
+            float3 _FramePos;
+            float3 _FrameVel;
 
             float4 _Color;
 
             struct PrevPosData
             {
-                float4 positionST : POSITION;
+                float4 positionST : POSITION; //w coord is time
+                float4 velocity : TEXCOORD0; //w coord of velocity is length contraction factor (1/gamma)
             };
             int _PrevPosCount;
             int _PrevPosCurrentIndex;
@@ -66,20 +84,27 @@ Shader "Unlit/ShaderST"
             {
                 v2f OUT;
 
+                float4x4 frameVelMatrix = LorentzBoost(_FrameVel, _C);
+
                 //view pos
                 float4 vertex = mul(UNITY_MATRIX_M,IN.vertex);
-                float4 vel = _Velocity;
 
                 float3 worldModelPos = float3(UNITY_MATRIX_M[0].w,UNITY_MATRIX_M[1].w,UNITY_MATRIX_M[2].w);
                 float3 vertexWorldOffset = vertex.xyz - worldModelPos;
 
+                //vertex = float4(worldModelPos + vertexWorldOffset, 1);
+                vertex = float4(worldModelPos + ScaleInDirection(vertexWorldOffset, _RealLengthContractionVector), 1);
+
                 float4 timeBackPos = vertex;
 
                 #ifdef ADVANCED_TIMEBACK_ON
+
                     //binary search the buffer
 
+                    /*
                     int minBound = 0;
                     int maxBound = _PrevPosCount;
+ 
                     for (int i = 0; i < log2(_PrevPosCount); i++)
                     {
                         int index = minBound + (maxBound-minBound)/2;
@@ -87,8 +112,11 @@ Shader "Unlit/ShaderST"
                         if (bufferIndex < 0) bufferIndex += _PrevPosCount;
                         PrevPosData data = _PrevPosBuffer[bufferIndex];
 
-                        float3 positionST = (data.positionST.xyz+vertexWorldOffset)/_C;
+                        float3 positionXYZ = data.positionST.xyz + ApplyLengthContraction(vertexWorldOffset, data.velocity.xyz, _C) - _FramePos;
+
                         float realtiveTime = data.positionST.w - _PrevPosCurrentTime;
+
+                        float4 positionST = float4(positionXYZ/_C, realtiveTime);
 
                         bool outCone = dot(positionST,positionST) > realtiveTime*realtiveTime;
                         if (outCone)
@@ -100,6 +128,7 @@ Shader "Unlit/ShaderST"
                             maxBound = index;
                         }
                     }
+                    
 
                     //use data at index from binary search
                     int timeBackBufferIndex = _PrevPosCurrentIndex - minBound;
@@ -108,27 +137,55 @@ Shader "Unlit/ShaderST"
                     {
                         timeBackBufferIndex += _PrevPosCount;
                     }
+                    //PrevPosData timeBackData = _PrevPosBuffer[_PrevPosCurrentIndex];
                     PrevPosData timeBackData = _PrevPosBuffer[timeBackBufferIndex];
+                    */
+ 
+                    float4 posDif = _BasePos-float4(_FramePos,0);
+                    posDif.w = -sqrt(dot(posDif.xyz,posDif.xyz)) / _C;
 
-                    OUT.timeBack = timeBackData.positionST.w-_PrevPosCurrentTime;
-                    timeBackPos = timeBackData.positionST + float4(vertexWorldOffset.xyz,0);
+                    //OUT.timeBack = timeBackData.positionST.w-_PrevPosCurrentTime;
+                    //timeBackPos = float4(timeBackData.positionST.xyz + ApplyLengthContraction(vertexWorldOffset, timeBackData.velocity.xyz, _C), -OUT.timeBack);
+
+                    //timeBackPos = mul(frameVelMatrix, timeBackData.positionST.xyz); 
+                    timeBackPos.w = 0;
+                    timeBackPos = mul(frameVelMatrix+vertexWorldOffset, posDif); 
+                    //timeBackPos = mul(frameVelMatrix, vertex); 
+
                     timeBackPos.w = 1;
 
                 #else
                     //based on how far the object is, roll back time a bit, this is cause the light takes a bit to travel
 
-                    float4 pos_C = vertex/_C; //just the position adjusted for the speed of light
-                    float4 vel_C = vel/_C; //just the position adjusted for the speed of light
+                    float3 pos_C = (_BasePos+vertexWorldOffset-_FramePos)/_C; //just the position adjusted for the speed of light
+                    float3 vel_C = _BaseVel/_C; //just the velocity adjusted for the speed of light
 
                     float posVel_C_dot = dot(pos_C,vel_C);
                     float vel_C_SqrMag = dot(vel_C,vel_C);
                     float pos_C_SqrMag = dot(pos_C,pos_C);
 
-                    float timeStepBack = ( -(posVel_C_dot) + sqrt( (posVel_C_dot*posVel_C_dot) - (vel_C_SqrMag - 1)*(pos_C_SqrMag) )) / (vel_C_SqrMag - 1);
+                    float realTimeStepBack = ( -(posVel_C_dot) + sqrt( (posVel_C_dot*posVel_C_dot) - (vel_C_SqrMag - 1)*(pos_C_SqrMag) )) / (vel_C_SqrMag - 1);
+                    //float realTimeStepBack = -sqrt(pos_C_SqrMag);
 
-                    OUT.timeBack = timeStepBack;
+                    //timeBackPos = float4(_BasePos+vertexWorldOffset-_FramePos + _BaseVel*realTimeStepBack, realTimeStepBack);
 
-                    timeBackPos = vertex + vel*timeStepBack;
+                    //float measuredTimeForward = dot(_FrameVel, timeBackPos.xyz)/(_C*_C);
+
+                    timeBackPos = mul(frameVelMatrix, timeBackPos);
+
+                    timeBackPos.w = 1;
+
+                    #ifdef LSD_ON
+                        vertex = timeBackPos;
+                        OUT.timeBack = realTimeStepBack + _PrevPosCurrentTime;
+                    #else
+                        OUT.timeBack = dot((_BasePos+vertexWorldOffset-_FramePos), _FrameVel)/(_C*_C);
+
+                        //timeBackPos = mul(frameVelMatrix, float4(_BasePos, OUT.timeBack));
+
+                    #endif
+
+                    
                 #endif
 
                 //go back in time
@@ -141,7 +198,6 @@ Shader "Unlit/ShaderST"
 
                 OUT.vertex = vertex;
                 OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
-                //UNITY_TRANSFER_FOG(o,o.vertex);
                 return OUT;
             }
 
@@ -154,7 +210,7 @@ Shader "Unlit/ShaderST"
 
                 
                 #ifdef COLOR_BY_TIME_ON
-                    float3 timeColor = HSVToRGB(float3(IN.timeBack*0.4f,1,1));
+                    float3 timeColor = HSVToRGB(float3(IN.timeBack*0.2f,1,1));
                     realCol = fixed4(timeColor.x,timeColor.y,timeColor.z,1);
                 #endif
                 
