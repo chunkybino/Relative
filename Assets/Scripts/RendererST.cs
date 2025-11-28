@@ -51,6 +51,8 @@ public class RendererST : MonoBehaviour
         matBlock.SetVector("_BaseLengthContractionVector", transformST.baseLengthContractionVector);
         matBlock.SetVector("_RealLengthContractionVector", transformST.realLengthContractionVector);
 
+        matBlock.SetFloat("_ProperTime", transformST.properClock);
+
         matBlock.SetVector("_FramePos", frame.framePos);
         matBlock.SetVector("_FrameVel", frame.frameVel);
 
@@ -64,7 +66,7 @@ public class RendererST : MonoBehaviour
         }
         matBlock.SetFloat("_PrevPosCount", transformST.prevPositions.Length);
         matBlock.SetFloat("_PrevPosCurrentIndex", transformST.prevPosWriteIndex);
-        matBlock.SetFloat("_PrevPosCurrentTime", frame.currentRealTime);
+        matBlock.SetFloat("_PrevPosCurrentTime", frame.currentProperTime);
 
         renderer.SetPropertyBlock(matBlock);
     }

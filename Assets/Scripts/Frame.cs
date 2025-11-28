@@ -35,9 +35,13 @@ public class Frame : MonoBehaviour
     public Vector3 frameVel;
     public Vector3 frameProperVel;
 
-    public Matrix4x4 frameVelMatrix;
+    public float frameGamma;
 
-    public float currentRealTime;
+    public Matrix4x4 frameVelMatrix;
+    public Matrix4x4 frameVelMatrixInverse;
+
+    public float currentBaseTime;
+    public float currentProperTime;
 
     void Awake()
     {
@@ -78,11 +82,15 @@ public class Frame : MonoBehaviour
         frameProperVel += acceleration * Time.fixedDeltaTime;
         frameVel = frameProperVel*OppositeGamma(frameProperVel);
 
-        framePos += frameVel * Time.fixedDeltaTime;
+        framePos += frameProperVel * Time.fixedDeltaTime;
 
-        frameVelMatrix = LorentzBoost(-frameVel);
+        frameGamma = Gamma(frameVel);
 
-        currentRealTime += Gamma(frameVel) * Time.fixedDeltaTime;
+        frameVelMatrix = LorentzBoost(frameVel);
+        frameVelMatrixInverse = LorentzBoost(-frameVel);
+
+        currentBaseTime += frameGamma * Time.fixedDeltaTime;
+        currentProperTime += Time.fixedDeltaTime;
     }
 
     public void BoostFrame(Vector3 vel)

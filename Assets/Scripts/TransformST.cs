@@ -39,12 +39,7 @@ public class TransformST : MonoBehaviour
 
     //public Vector3 accelerationProper;
 
-    public Vector3 fakeVel;
     public Vector3 realVel;
-
-    public Vector4 realVel4 {get{return new Vector4(realVel.x,realVel.y,realVel.z,C);}}
-
-    [SerializeField] Transform skewParent;
 
     public Vector3 basePosition;
     public Vector3 baseVelocity;
@@ -55,7 +50,9 @@ public class TransformST : MonoBehaviour
     public int prevPosWriteIndex = 0;
     public PrevPosData[] prevPositions = new PrevPosData[128];
 
-    public float currentRealTime = 0;
+    public float currentBaseTime = 0;
+    public float deltaBaseTime;
+    public float properClock = 0;
 
     [System.Serializable]
     public struct PrevPosData
@@ -67,108 +64,30 @@ public class TransformST : MonoBehaviour
     void OnEnable()
     {
         frame = Frame.singleton;
-
-        frame.onBoost.AddListener(Boost);
     }
 
     void Start()
     {
         basePosition = position;
-
-        //SpawnSkewerThing();
-    }
-    void SpawnSkewerThing()
-    {
-        GameObject obj = new GameObject(gameObject.name);
-        skewParent = obj.transform;
-        transform.SetParent(skewParent);
-
-        skewParent.position = transform.position;
-        transform.localPosition = new Vector3(0,0,0);
     }
 
     void FixedUpdate()
     {
         BoostFromBase();
 
-        basePosition += baseVelocity * Time.fixedDeltaTime;
+        //basePosition += baseVelocity * deltaBaseTime;
 
-        UpdatePrevPos();
+        properClock += deltaBaseTime / Frame.Gamma(baseVelocity);
 
-        currentRealTime += Time.fixedDeltaTime;
+        //UpdatePrevPos();
+
+        //currentRealTime += Time.fixedDeltaTime;
 
         //length contraction vector time
         baseLengthContractionVector = (Vector4)baseVelocity.normalized; 
         baseLengthContractionVector.w = 1/Frame.Gamma(baseVelocity);
         realLengthContractionVector = (Vector4)realVel.normalized; 
         realLengthContractionVector.w = 1/gamma;
-
-        /*
-        if (frame.isInterial)
-        {
-            fakeVel -= frame.acceleration * Time.fixedDeltaTime;
-            realVel = fakeVel * Frame.OppositeGamma(fakeVel);
-
-            ContractRimler(frame.rimler);
-        }
-        else
-        {
-            skewParent.position += realVel * Time.fixedDeltaTime;
-            //position += realVel * Time.fixedDeltaTime;
-
-            SetContract();
-        }
-        */
-    }
-
-    public void ContractRimler(Vector3 rimler)
-    {
-        Vector3 rimlerDis = position - rimler;
-        float rimlerDot = Vector3.Dot(rimlerDis,-rimler)/rimler.magnitude;
-
-        //Vector3 parVel = rimler.normalized*Vector3.Dot(realVel, rimler.normalized);
-        //Vector3 perpVel = realVel-parVel;
-
-        skewParent.position += realVel * (rimlerDot/rimler.magnitude) * Time.fixedDeltaTime;
-
-        SetContract();
-
-        /*
-        skewParent.localScale = new Vector3(Mathf.Sqrt(1 - realVel.sqrMagnitude/(C*C)), 1, 1);
-
-        //Quaternion currentQuart = skewParent.rotation;
-        Quaternion directionQuart = Quaternion.FromToRotation(new Vector3(1,0,0), realVel);
-        skewParent.rotation = directionQuart;
-        transform.localRotation = Quaternion.Inverse(directionQuart);
-        */
-        
-        //skewParent.position = position;
-        //transform.localPosition = Vector3.zero;
-    }
-
-    void SetContract()
-    {
-        skewParent.localScale = new Vector3(Mathf.Sqrt(1 - realVel.sqrMagnitude/(C*C)), 1, 1);
-
-        //Quaternion currentQuart = skewParent.rotation;
-        Quaternion directionQuart = Quaternion.FromToRotation(new Vector3(1,0,0), realVel);
-        skewParent.rotation = directionQuart;
-        transform.localRotation = Quaternion.Inverse(directionQuart);
-    }
-
-    public void Boost(Matrix4x4 mat)
-    {
-        //Vector4 newPos = mat * position4;
-        Vector4 newPos = mat * skewParent.position;
-        Vector4 newVel = mat * realVel4;
-
-        newVel *= C/newVel.w;
-        newPos -= newPos.w * newVel;
-
-        realVel = newVel;
-
-        skewParent.position = newPos;
-        //position = newPos;
     }
 
     public void BoostFromBase()
@@ -178,7 +97,7 @@ public class TransformST : MonoBehaviour
         Vector3 relativePos = basePosition - frame.framePos;
 
         //Vector4 newPos = mat * position4;
-        Vector4 newPos = mat * (Vector4)relativePos;
+        Vector4 newPos = mat * new Vector4(relativePos.x, relativePos.y, relativePos.z, frame.currentBaseTime - currentBaseTime);
         Vector4 newVel = mat * new Vector4(baseVelocity.x,baseVelocity.y,baseVelocity.z,C);
 
         newVel *= C/newVel.w;
@@ -186,28 +105,19 @@ public class TransformST : MonoBehaviour
 
         realVel = newVel;
 
-        //skewParent.position = newPos;
-        //position = newPos;
+        position = (Vector3)newPos - (realVel/C)*newPos.w;
 
-        currentRealTime = frame.currentRealTime + Vector3.Dot(relativePos,frame.frameVel/(C*C)); //dot the distacne with the frame velocity to see what time this object gets observed by the frame
+        newPos = new Vector4(position.x,position.y,position.z,0);
 
-        if (realVel != Vector3.zero)
-        {
-            Vector3 posInVelDirection = realVel*Vector3.Dot(relativePos, realVel)/realVel.sqrMagnitude;
-            Vector3 posOutVelDirection = relativePos - posInVelDirection;
+        float newBaseTime = frame.currentBaseTime + Vector3.Dot(relativePos,frame.frameVel)/(C*C); //dot the distacne with the frame velocity to see what time this object gets observed by the frame
 
-            //skewParent.position = posInVelDirection/gamma + posOutVelDirection;
-            position = posInVelDirection/gamma + posOutVelDirection;
-        }
-        else
-        {
-            //skewParent.position = newPos;
-            position = newPos;
-        }
+        deltaBaseTime = newBaseTime - currentBaseTime;
+        currentBaseTime = newBaseTime;
 
-        //SetContract();
+        basePosition += baseVelocity*deltaBaseTime;
     }
 
+    /*
     void UpdatePrevPos()
     {
         prevPositions[prevPosWriteIndex].pos = basePosition;
@@ -219,4 +129,5 @@ public class TransformST : MonoBehaviour
         prevPosWriteIndex++;
         if (prevPosWriteIndex >= prevPositions.Length) prevPosWriteIndex = 0;
     }
+    */
 }

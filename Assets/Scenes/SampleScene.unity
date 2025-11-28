@@ -220,9 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -485,7 +483,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &146409321
 Transform:
   m_ObjectHideFlags: 0
@@ -602,9 +602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -867,7 +865,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &259853418
 Transform:
   m_ObjectHideFlags: 0
@@ -7326,9 +7326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -7591,7 +7589,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &373618374
 Transform:
   m_ObjectHideFlags: 0
@@ -7708,9 +7708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -7973,7 +7971,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &385772437
 Transform:
   m_ObjectHideFlags: 0
@@ -8211,9 +8211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -8476,7 +8474,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &454006073
 Transform:
   m_ObjectHideFlags: 0
@@ -8593,9 +8593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -8858,7 +8856,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &553489247
 Transform:
   m_ObjectHideFlags: 0
@@ -8975,9 +8975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -9240,7 +9238,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &596045963
 Transform:
   m_ObjectHideFlags: 0
@@ -9507,9 +9507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -9772,7 +9770,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &838202634
 Transform:
   m_ObjectHideFlags: 0
@@ -9889,9 +9889,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -10154,7 +10152,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &851074019
 Transform:
   m_ObjectHideFlags: 0
@@ -10164,7 +10164,7 @@ Transform:
   m_GameObject: {fileID: 851074014}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29, y: -3, z: -1}
+  m_LocalPosition: {x: -15.3, y: -3, z: -1}
   m_LocalScale: {x: 10, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10271,9 +10271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -10536,7 +10534,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &1044252578
 Transform:
   m_ObjectHideFlags: 0
@@ -10653,9 +10653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -10918,7 +10916,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &1077036216
 Transform:
   m_ObjectHideFlags: 0
@@ -11035,9 +11035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -11300,7 +11298,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &1109313247
 Transform:
   m_ObjectHideFlags: 0
@@ -11417,9 +11417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -11682,7 +11680,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &1207820888
 Transform:
   m_ObjectHideFlags: 0
@@ -11799,9 +11799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -12064,7 +12062,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &1438874412
 Transform:
   m_ObjectHideFlags: 0
@@ -12181,9 +12181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -12446,7 +12444,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &1462025166
 Transform:
   m_ObjectHideFlags: 0
@@ -12523,9 +12523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -12788,7 +12786,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!1 &1705256285
 GameObject:
   m_ObjectHideFlags: 0
@@ -12820,7 +12820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8832189e6faa9a4699923635db6609f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedOfLight: 2
+  speedOfLight: 4
   acceleration: {x: 0, y: 0, z: 0}
   onBoost:
     m_PersistentCalls:
@@ -12830,6 +12830,7 @@ MonoBehaviour:
   framePos: {x: 0, y: 0, z: 0}
   frameVel: {x: 0, y: 0, z: 0}
   frameProperVel: {x: 0, y: 0, z: 0}
+  frameGamma: 0
   frameVelMatrix:
     e00: 0
     e01: 0
@@ -12847,7 +12848,25 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
-  currentRealTime: 0
+  frameVelMatrixInverse:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  currentBaseTime: 0
+  currentProperTime: 0
 --- !u!4 &1705256287
 Transform:
   m_ObjectHideFlags: 0
@@ -13071,9 +13090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -13336,7 +13353,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &1877630298
 Transform:
   m_ObjectHideFlags: 0
@@ -13453,9 +13472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -13718,7 +13735,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &1914295580
 Transform:
   m_ObjectHideFlags: 0
@@ -13835,9 +13854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406af1a7e0f029b4eaed0a05148ff598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeVel: {x: 0, y: 0, z: 0}
   realVel: {x: 0, y: 0, z: 0}
-  skewParent: {fileID: 0}
   basePosition: {x: 0, y: 0, z: 0}
   baseVelocity: {x: 0, y: 0, z: 0}
   baseLengthContractionVector: {x: 0, y: 0, z: 0, w: 1}
@@ -14100,7 +14117,9 @@ MonoBehaviour:
     vel: {x: 0, y: 0, z: 0, w: 0}
   - pos: {x: 0, y: 0, z: 0, w: 0}
     vel: {x: 0, y: 0, z: 0, w: 0}
-  currentRealTime: 0
+  currentBaseTime: 0
+  deltaBaseTime: 0
+  properClock: 0
 --- !u!4 &2014696377
 Transform:
   m_ObjectHideFlags: 0

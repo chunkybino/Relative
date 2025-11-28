@@ -9,6 +9,8 @@ Shader "Unlit/ShaderST"
         _BaseVel("BaseVel", Vector) = (0,0,0,0)
         _RealVel("RealVel", Vector) = (0,0,0,0)
 
+        _ProperTime("ProperTime", Float) = 0
+
         _C("C", Float) = 1
 
         _BaseLengthContractionVector("BaseLengthContractionVector", Vector) = (0,0,0,1)
@@ -63,6 +65,8 @@ Shader "Unlit/ShaderST"
             float3 _BasePos;
             float3 _BaseVel;
             float3 _RealVel;
+
+            float _ProperTime;
 
             float3 _FramePos;
             float3 _FrameVel;
@@ -179,7 +183,9 @@ Shader "Unlit/ShaderST"
                         vertex = timeBackPos;
                         OUT.timeBack = realTimeStepBack + _PrevPosCurrentTime;
                     #else
-                        OUT.timeBack = dot((_BasePos+vertexWorldOffset-_FramePos), _FrameVel)/(_C*_C);
+
+                        OUT.timeBack = _ProperTime + dot(_FrameVel, vertexWorldOffset)/(_C*_C);
+                        //OUT.timeBack = _ProperTime;
 
                         //timeBackPos = mul(frameVelMatrix, float4(_BasePos, OUT.timeBack));
 
@@ -210,7 +216,7 @@ Shader "Unlit/ShaderST"
 
                 
                 #ifdef COLOR_BY_TIME_ON
-                    float3 timeColor = HSVToRGB(float3(IN.timeBack*0.2f,1,1));
+                    float3 timeColor = HSVToRGB(float3(IN.timeBack*0.1f,1,1));
                     realCol = fixed4(timeColor.x,timeColor.y,timeColor.z,1);
                 #endif
                 
