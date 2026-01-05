@@ -1,4 +1,6 @@
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GuyController : MonoBehaviour
 {
@@ -23,9 +25,21 @@ public class GuyController : MonoBehaviour
     [SerializeField] bool advancedTimeBack; 
     [SerializeField] bool colorByTime; 
 
+    [SerializeField] TextMeshProUGUI observerModeText;
+    [SerializeField] TextMeshProUGUI colorModeText;
+
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
+        //set LSD on
+        Shader.EnableKeyword("LSD_ON");
+        Shader.DisableKeyword("LSD_OFF");
+        observerModeText.text = "Mode: Observed (Press 8)";
+        //set color off
+        Shader.EnableKeyword("COLOR_BY_TIME_OFF");
+        Shader.DisableKeyword("COLOR_BY_TIME_ON");
+        colorModeText.text = "Color: Off (Press 9)";
     }
 
     void Update()
@@ -73,12 +87,17 @@ public class GuyController : MonoBehaviour
         }
         if (Input.GetKeyDown("9"))
         {   
-            ToggleAdvancedTimeBack();
-        }
-        if (Input.GetKeyDown("0"))
-        {   
             ToggleColorByTime();
         }
+        if (Input.GetKeyDown("escape"))
+        {   
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        /*
+        if (Input.GetKeyDown("0"))
+        {   
+            ToggleAdvancedTimeBack();
+        }*/
     }
 
     void ToggleLSD()
@@ -87,14 +106,19 @@ public class GuyController : MonoBehaviour
         {
             Shader.EnableKeyword("LSD_ON");
             Shader.DisableKeyword("LSD_OFF");
+
+            observerModeText.text = "Mode: Observed (Press 8)";
         }
         else
         {
             Shader.EnableKeyword("LSD_OFF");
             Shader.DisableKeyword("LSD_ON");
+
+            observerModeText.text = "Mode: Measured (Press 8)";
         }
         onLSD = !onLSD;
     }
+    /*
     void ToggleAdvancedTimeBack()
     {
         if (!advancedTimeBack)
@@ -109,17 +133,22 @@ public class GuyController : MonoBehaviour
         }
         advancedTimeBack = !advancedTimeBack;
     }
+    */
     void ToggleColorByTime()
     {
         if (!colorByTime)
         {
             Shader.EnableKeyword("COLOR_BY_TIME_ON");
             Shader.DisableKeyword("COLOR_BY_TIME_OFF");
+
+            colorModeText.text = "Color: On (Press 9)";
         }
         else
         {
             Shader.EnableKeyword("COLOR_BY_TIME_OFF");
             Shader.DisableKeyword("COLOR_BY_TIME_ON");
+
+            colorModeText.text = "Color: Off (Press 9)";
         }
         colorByTime = !colorByTime;
     }

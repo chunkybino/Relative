@@ -107,27 +107,6 @@ public class Frame : MonoBehaviour
 
         float gamSqrWeird = gamma*gamma/(1+gamma);
 
-        /*
-        Matrix4x4 mat = new Matrix4x4();
-        
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                float result = gamSqrWeird;
-                if (i == 3 || j == 3) result = gamma;
-                if (i == 3 ^ j == 3) result *= -1;
-
-                if (i < 3) result *= vel[i];
-                if (j < 3) result *= vel[j];
-
-                if (i == j && i < 3) result += 1;
-
-                mat[i,j] = result;
-            }
-        }
-        */
-
         Matrix4x4 mat = new Matrix4x4(
             new Vector4(1+gamSqrWeird*(vel.x*vel.x), gamSqrWeird*(vel.x*vel.y),   gamSqrWeird*(vel.x*vel.z),   -gamma*vel.x), 
             new Vector4(gamSqrWeird*(vel.x*vel.y),   1+gamSqrWeird*(vel.y*vel.y), gamSqrWeird*(vel.y*vel.z),   -gamma*vel.y), 

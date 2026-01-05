@@ -117,6 +117,11 @@ public class TransformST : MonoBehaviour
         basePosition += baseVelocity*deltaBaseTime;
     }
 
+    public void AccelerateProperVel(Vector3 accel)
+    {
+        baseVelocity += accel / gamma;
+    }
+
     /*
     void UpdatePrevPos()
     {
