@@ -7,7 +7,6 @@ public class DumbGoomba : MonoBehaviour
     [SerializeField] float centerPos = 14;
 
     [SerializeField] Vector3 accel = new Vector3(0,0,2);
-    [SerializeField] float accelMax = 1;
     int accelDir = 1;
 
     float deltaProperTime;
