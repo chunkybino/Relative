@@ -42,6 +42,8 @@ public class RendererST : MonoBehaviour
             CreateMatBlock();
         }
 
+        if (frame == null) return;
+
         matBlock.SetVector("_Color", color);
 
         matBlock.SetVector("_BasePos", transformST.basePosition);
